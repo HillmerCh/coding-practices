@@ -3,16 +3,26 @@ package com.hillmerch.walking;
 import java.time.Duration;
 import java.time.Instant;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class WalkFromWestGateBuildingToTheHUBModel {
+
+	private static final Logger logger = LoggerFactory.getLogger( WalkFromWestGateBuildingToTheHUBModel.class);
 
 	public record Location(int latitude, int longitude){}//geographic coordinate
 
 	public Location run(boolean useAutomaticDoorButton) {
 		var startedTime = getStartedTime();
+
 		openWestGateBuildingDoor(useAutomaticDoorButton);
 		var currentLocation = walkToTheHUB();
 		openHUBDoor(useAutomaticDoorButton);
-		System.out.println(calculateRunningTime(startedTime));
+
+		var runningTime = calculateRunningTime(startedTime);
+
+		logger.info( "Time required to complete the model {}", runningTime );
+
 		return currentLocation;
 	}
 
